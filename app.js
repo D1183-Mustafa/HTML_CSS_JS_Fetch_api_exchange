@@ -2,7 +2,8 @@ const inputLira = document.getElementById("InputLira");
 const formSubmit = document.getElementById("form");
 
 let outPutDolar = document.querySelector(".dolar-bilgi");
-let outpurEuro = document.querySelector(".euro-bilgi");
+let outputEuro = document.querySelector(".euro-bilgi");
+const outputAltın = document.querySelector(".altın-bilgi");
 
 class Request {
   async get(url) {
@@ -16,14 +17,15 @@ let request = new Request();
 
 request
   .get(
-    "http://api.exchangeratesapi.io/v1/latest?access_key=65c89bb8d0a2aa581f7585cccaa35418"
+    "https://finans.truncgil.com/today.json"
   )
   .then((result) => {
+    console.log(Object.values(result)[68].Satış);
     formSubmit.addEventListener("submit", paraÇeviri);
     function paraÇeviri(e) {
-      outPutDolar.innerText = (Number(inputLira.value) / (result.rates.TRY /result.rates.USD)).toFixed(2) ;
-      outpurEuro.innerText = (Number(inputLira.value) / (result.rates.TRY)).toFixed(2);
-
+      outPutDolar.innerText = (inputLira.value / parseFloat(result.USD.Satış)).toFixed(2);
+      outputEuro.innerText = (inputLira.value / parseFloat(result.EUR.Satış)).toFixed(2);
+      outputAltın.innerText = (inputLira.value / parseFloat(Object.values(result)[68].Satış)).toFixed(4);
       e.preventDefault();
     }
   })
